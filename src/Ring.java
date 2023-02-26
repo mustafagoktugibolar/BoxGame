@@ -3,6 +3,7 @@ public class Ring {
     Fighter f2;
     int minWeight;
     int maxWeight;
+    boolean firstHit;
 
     public Ring(Fighter f1, Fighter f2, int minWeight, int maxWeight) {
         this.f1 = f1;
@@ -16,18 +17,47 @@ public class Ring {
         if (checkWeight()) {
             while (f1.health > 0 && f2.health > 0) {
                 System.out.println("======== NEW ROUND ===========");
-                f2.health = f1.hit(f2);
-                if (isWin()){
-                    break;
+                if(firstHit){
+                    this.f1.health = f2.hit(f1);
+
+                    if(isWin()){
+                        break;
+                    }
                 }
-                f1.health = f2.hit(f1);
-                if (isWin()){
-                    break;
+
+                else {
+
+                    this.f2.health = f1.hit(f2);
+                    if (isWin()) {
+                        break;
+
+                    }
+
+                }
+                if (firstHit()) {
+
+                    this.f1.health = f2.hit(f1);
+                    if (isWin()) {
+                        break;
+
+                    }
+
+                } else {
+
+                    this.f2.health = f1.hit(f2);
+                    if (isWin()) {
+                        break;
+
+                    }
+
                 }
                 printScore();
             }
+                
+            
 
-        } else {
+        } 
+        else {
             System.out.println("Their devision doesn't match");
         }
 
@@ -36,6 +66,11 @@ public class Ring {
 
     public boolean checkWeight() {
         return (f1.weight >= minWeight && f1.weight <= maxWeight) && (f2.weight >= minWeight && f2.weight <= maxWeight);
+    }
+    private boolean firstHit(){
+        firstHit = Math.random() * 2 <= 1;
+        return firstHit;
+        
     }
 
     public boolean isWin() {
